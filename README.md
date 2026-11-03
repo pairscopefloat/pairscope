@@ -123,7 +123,7 @@ Float publishes no robots.txt, no rate-limit headers and nothing in its terms ab
 
 - **Float has no public API.** Pairscope reads Float's public pages the same way a visitor does, once an hour. If Float changes its page layout, the run fails with a message like `layout may have changed`. The fix goes in the two parse functions in `scripts/lib/float.mjs`, which are covered by tests. Read Float's terms of use, and be ready to switch to a different method if Float asks.
 - **Yahoo Finance's chart data is free but unofficial.** It can rate-limit or change without notice. Stooq is the automatic backup for US listings.
-- **GitHub may delay scheduled runs** by several minutes when it's busy.
+- **GitHub may delay or skip scheduled runs**, especially in the first hours after a schedule is added and when GitHub is busy. Pushing any code change (or **Actions → Run workflow**) always starts a full refresh right away.
 - **GitHub pauses scheduled workflows** in public repositories after 60 days without repository activity. The job saves a copy of the data to the repository every 6 hours, which counts as activity, but if the job ever stops, re-enable it on the **Actions** tab.
 - **The first version of the site shows a seed snapshot** from Nov 2–3, 2026, labeled "Seed snapshot." The first successful run replaces it with live data.
 - **Not affiliated with Float.** Pairscope is an independent tool and is not affiliated with or endorsed by Float. The site footer says so too.
