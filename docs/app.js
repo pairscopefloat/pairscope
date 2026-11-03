@@ -239,3 +239,14 @@ route();
 
 load();
 setInterval(load, 3*60*1000);   // the data file is tiny and served by GitHub's CDN, so checking often costs nothing
+
+// copy the official contract address
+(function(){
+  const btn=document.getElementById("ca-copy"), addr=document.getElementById("ca-addr");
+  if(!btn||!addr) return;
+  btn.addEventListener("click", async ()=>{
+    try{ await navigator.clipboard.writeText(addr.textContent.trim()); btn.textContent="Copied"; }
+    catch(e){ const r=document.createRange(); r.selectNodeContents(addr); const s=getSelection(); s.removeAllRanges(); s.addRange(r); btn.textContent="Selected, press Ctrl+C"; }
+    setTimeout(()=>{ btn.textContent="Copy"; }, 2000);
+  });
+})();
