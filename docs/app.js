@@ -38,13 +38,16 @@ async function load(){
 }
 
 function header(j){
-  const age = (Date.now()-Date.parse(j.generatedAt))/3600000;
+  const coinsAt = j.coinsAt || j.generatedAt;
+  const ageMin = (Date.now()-Date.parse(coinsAt))/60000;
+  const stale = !j.seed && ageMin > 45;
   const fresh = document.getElementById("fresh");
-  fresh.textContent = j.seed ? "Seed snapshot" : age > 3 ? "Data is stale" : "Live · hourly";
-  fresh.className = (j.seed || age > 3) ? "stale" : "";
-  document.getElementById("updated").textContent = "Updated " + ago(j.generatedAt);
+  fresh.textContent = j.seed ? "Seed snapshot" : stale ? "Data is stale" : "Live · every 10 min";
+  fresh.className = (j.seed || stale) ? "stale" : "";
+  document.getElementById("updated").textContent = "Coins updated " + ago(coinsAt);
   const s = j.sources || {};
-  document.getElementById("srcs").textContent = s.prices?.failed ? `${s.prices.failed} prices stale` : "All sources ok";
+  document.getElementById("srcs").textContent = s.prices?.failed ? `${s.prices.failed} prices stale`
+    : j.pricesAt ? "Prices & news " + ago(j.pricesAt) : "All sources ok";
   const st = j.stats || {};
   document.getElementById("stats").innerHTML =
     `<span><b>${st.assets}</b>pairing assets</span><span><b>${st.open}</b>with no coins yet</span><span><b>${st.coins}</b>coins launched on Float</span><span><b>${st.graduatedCoins ?? st.withGraduated}</b>graduated coins</span>`;
@@ -235,4 +238,4 @@ window.addEventListener("hashchange", route);
 route();
 
 load();
-setInterval(load, 10*60*1000);
+setInterval(load, 3*60*1000);   // the data file is tiny and served by GitHub's CDN, so checking often costs nothing

@@ -1,23 +1,52 @@
 name: Refresh Pairscope data
 
+# Two speeds:
+#  - Fast run every 10 minutes: Float only (new coins, pairings, market caps, holders, volume, rewards).
+#  - Full run once an hour at :33: Float + stock returns (Yahoo) + headlines (Google News).
+# Odd minutes avoid the top of the hour, when GitHub's scheduler is busiest and runs get delayed.
 on:
   schedule:
-    - cron: '17 * * * *'   # every hour at :17 (UTC); off the top of the hour, when GitHub is busiest
-  workflow_dispatch:        # lets you run it by hand from the Actions tab
+    - cron: '3,13,23,43,53 * * * *'   # fast
+    - cron: '33 * * * *'              # full
+  workflow_dispatch:                  # "Run workflow" button on the Actions tab always does a full run
 
 permissions:
-  contents: write
+  contents: write    # to save a copy of the data to the repository every 6 hours
+  pages: write       # to publish the site
+  id-token: write    # required by the Pages deploy action
 
 concurrency:
   group: refresh
   cancel-in-progress: false
 
+env:
+  # Where the live data file is published. Fast runs read the latest prices and news from here.
+  PREV_URL: https://pairscopefloat.github.io/pairscope/data/pairscope.json
+
 jobs:
   refresh:
     runs-on: ubuntu-latest
     timeout-minutes: 15
+    environment:
+      name: github-pages
+      url: ${{ steps.deploy.outputs.page_url }}
     steps:
       - uses: actions/checkout@v4
+
+      - name: Pick fast or full run
+        id: mode
+        run: |
+          if [ "${{ github.event.schedule }}" = "3,13,23,43,53 * * * *" ]; then
+            echo "fast=1" >> "$GITHUB_OUTPUT"; echo "Fast run (Float only)"
+          else
+            echo "fast=0" >> "$GITHUB_OUTPUT"; echo "Full run (Float, prices, news)"
+          fi
+          # keep a copy in the repository every 6 hours (also keeps the schedule from being paused for inactivity)
+          if [ "${{ github.event_name }}" = "workflow_dispatch" ] || { [ "${{ github.event.schedule }}" = "33 * * * *" ] && [ $(( $(date -u +%H) % 6 )) -eq 0 ]; }; then
+            echo "save=1" >> "$GITHUB_OUTPUT"
+          else
+            echo "save=0" >> "$GITHUB_OUTPUT"
+          fi
 
       - uses: actions/setup-node@v4
         with:
@@ -35,15 +64,24 @@ jobs:
 
       - name: Refresh data
         run: npm run refresh
+        env:
+          FAST: ${{ steps.mode.outputs.fast }}
 
-      - name: Commit if changed
+      - name: Save a copy to the repository
+        if: steps.mode.outputs.save == '1'
         run: |
-          if git diff --quiet -- docs/data/pairscope.json; then
-            echo "No changes"
-            exit 0
-          fi
+          if git diff --quiet -- docs/data/pairscope.json; then echo "No changes"; exit 0; fi
           git config user.name "pairscope-bot"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add docs/data/pairscope.json
-          git commit -m "Refresh data $(date -u +'%Y-%m-%d %H:%M UTC')"
+          git commit -m "Data snapshot $(date -u +'%Y-%m-%d %H:%M UTC')"
           git push
+
+      - uses: actions/configure-pages@v5
+
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: docs
+
+      - id: deploy
+        uses: actions/deploy-pages@v4

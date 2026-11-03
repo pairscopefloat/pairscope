@@ -1,7 +1,9 @@
-// Hourly refresh: Float coin counts + stock returns + news -> docs/data/pairscope.json
+// Refresh: Float coins + stock returns + news -> docs/data/pairscope.json
 // Run locally with:  npm run refresh
-// Options (env):  FIXTURES=1 use saved Float pages in test/fixtures instead of scraping
+// Options (env):  FAST=1      Float only (coins, pairings, holders, volume); keep the previous prices and news
 //                 PRICES=0 / NEWS=0 skip that step and keep the previous values
+//                 PREV_URL    read the previous data from the live site instead of the local file
+//                 FIXTURES=1  use saved Float pages in test/fixtures instead of loading Float
 import { readFile, writeFile, mkdir } from 'node:fs/promises';
 import { dirname } from 'node:path';
 import { scrapeFloat, parseAssets, parseCoins, parseCards, aggregateCoins } from './lib/float.mjs';
@@ -12,9 +14,17 @@ import { getNews } from './lib/news.mjs';
 import { rankRows } from './lib/score.mjs';
 
 const OUT = new URL('../docs/data/pairscope.json', import.meta.url);
-const env = process.env;
+const env = { ...process.env };
+if (env.FAST === '1') { env.PRICES = '0'; env.NEWS = '0'; }
 
+/** The last published data: the live site first (it has the newest prices and news), then the local file. */
 async function readPrevious() {
+  if (env.PREV_URL) {
+    try {
+      const res = await fetch(`${env.PREV_URL}?t=${Date.now()}`, { signal: AbortSignal.timeout(15000), headers: { 'cache-control': 'no-cache' } });
+      if (res.ok) { const j = await res.json(); if (j?.assets?.length) return j; }
+    } catch { /* fall through to the local copy */ }
+  }
   try { return JSON.parse(await readFile(OUT, 'utf8')); } catch { return null; }
 }
 
@@ -98,8 +108,13 @@ async function main() {
   // 4. Score and write
   const ranked = rankRows(rows);
   const coinRows = buildCoinRows(coins, stats || {}, ranked);
+  const nowIso = new Date().toISOString();
   const out = {
-    generatedAt: new Date().toISOString(),
+    generatedAt: nowIso,
+    mode: env.FAST === '1' ? 'fast' : 'full',
+    coinsAt: nowIso,
+    pricesAt: env.PRICES === '0' ? (prev?.pricesAt || null) : nowIso,
+    newsAt: env.NEWS === '0' ? (prev?.newsAt || null) : nowIso,
     sources: {
       float: { assets: rows.length, coins: coins.length, from: env.FIXTURES === '1' ? 'fixtures' : 'floatlaunch.xyz' },
       prices: { ok: priced.length - priceFails.length, failed: priceFails.length, from: 'Yahoo Finance, Stooq fallback' },

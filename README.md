@@ -1,6 +1,6 @@
 # Pairscope
 
-Pairscope ranks every asset you can pair a coin with on [Float](https://www.floatlaunch.xyz), so you can find the open lane before you launch. Every hour it collects:
+Pairscope ranks every asset you can pair a coin with on [Float](https://www.floatlaunch.xyz), so you can find the open lane before you launch, and lists every Float coin for traders. It collects:
 
 - **Coin counts** from Float's public create and tokens pages: which assets already have coins, how many, and the best one on each.
 - **Stock returns** from Yahoo Finance (2026 so far, last month, last day), with Stooq as a backup.
@@ -8,21 +8,22 @@ Pairscope ranks every asset you can pair a coin with on [Float](https://www.floa
 
 It then gives each asset an opportunity score from 0 to 100 and publishes a static website.
 
-**Everything runs on free services.** GitHub Actions runs the hourly job, GitHub Pages hosts the site, and none of the data sources needs an API key. The only thing you pay for is a domain name, and that's optional.
+**Everything runs on free services.** GitHub Actions runs the refresh job, GitHub Pages hosts the site, and none of the data sources needs an API key. The only thing you pay for is a domain name, and that's optional.
 
 ---
 
 ## How it fits together
 
 ```
-GitHub Actions (every hour at :17)
+GitHub Actions: fast run every 10 min (Float only), full run every hour at :33 (Float + prices + news)
   └─ scripts/refresh.mjs
        ├─ scripts/lib/float.mjs     loads Float's pages in headless Chromium and parses them
        ├─ scripts/lib/prices.mjs    Yahoo Finance chart data, Stooq fallback
        ├─ scripts/lib/news.mjs      Google News RSS
        ├─ scripts/lib/score.mjs     the 0–100 score
-       └─ writes docs/data/pairscope.json and commits it
-GitHub Pages serves docs/ → index.html + app.js read data/pairscope.json
+       └─ writes docs/data/pairscope.json
+The same job publishes docs/ to GitHub Pages; a copy of the data is committed every 6 hours.
+Visitors' pages re-check data/pairscope.json every 3 minutes.
 ```
 
 If a source fails, the job keeps the last good value and marks it stale. If Float itself can't be read, the job stops without touching the data, so the site never goes blank.
@@ -56,10 +57,10 @@ News: 110/112 ok
 Wrote 246 rows in 61.3s. Top 5: SNDK 90, MU 90, ...
 ```
 
-After that, it runs by itself every hour.
+After that, it runs by itself: Float data every 10 minutes, prices and news every hour.
 
 ### 5. Turn on the website
-**Settings → Pages →** under **Build and deployment**, set **Source** to *Deploy from a branch*, **Branch** to `main`, and the folder to `/docs` → **Save**.
+**Settings → Pages →** under **Build and deployment**, set **Source** to **GitHub Actions**. There is nothing else to pick: the refresh job publishes the site itself after every run. Run the job once more (step 4) so the first deploy happens.
 
 After a minute, the site is live at `https://YOUR-USERNAME.github.io/pairscope/`.
 
@@ -102,7 +103,17 @@ To change the weights, edit `scripts/lib/score.mjs`. The website reads the score
 ## Things to adjust
 - **Asset types:** the lists of ETFs and of crypto tokens sold by Sunrise are in `scripts/lib/classify.mjs`.
 - **Price symbols:** `SYMBOL_OVERRIDES` in the same file. For example, `BRK.B` is looked up as `BRK-B`, and SK Hynix uses its Korean listing. Set an asset to `null` to skip its price.
-- **Schedule:** `cron` in `.github/workflows/refresh.yml`. The times are UTC.
+- **Schedule:** the two `cron` lines in `.github/workflows/refresh.yml` (times are UTC). GitHub won't run a schedule more often than every 5 minutes, and runs can start a few minutes late when GitHub is busy.
+
+## How often it refreshes, and why
+
+| Data | How often | Why this speed |
+|---|---|---|
+| Float coins, pairings, market caps, holders, volume, rewards | every 10 minutes | Float changes fastest. One run is about the same traffic as one person opening two pages and clicking "Show more", and Float serves those pages and its stats feed from Vercel's cache. |
+| Stock returns (Yahoo, Stooq) | every hour | About 100 requests per run against a free, unofficial source. Year-to-date returns barely move in an hour. |
+| Headlines (Google News) | every hour | About 110 searches per run. More often risks being rate-limited by Google. |
+
+Float publishes no robots.txt, no rate-limit headers and nothing in its terms about automated access (checked Nov 3, 2026), so there is no published "safe" number. Ten minutes is a deliberately conservative choice: going to 5 minutes would double the traffic for little gain, and runs that take a few minutes could start overlapping.
 
 ---
 
@@ -111,7 +122,7 @@ To change the weights, edit `scripts/lib/score.mjs`. The website reads the score
 - **Float has no public API.** Pairscope reads Float's public pages the same way a visitor does, once an hour. If Float changes its page layout, the run fails with a message like `layout may have changed`. The fix goes in the two parse functions in `scripts/lib/float.mjs`, which are covered by tests. Read Float's terms of use, and be ready to switch to a different method if Float asks.
 - **Yahoo Finance's chart data is free but unofficial.** It can rate-limit or change without notice. Stooq is the automatic backup for US listings.
 - **GitHub may delay scheduled runs** by several minutes when it's busy.
-- **GitHub pauses scheduled workflows** in public repositories after 60 days without repository activity. The hourly data commits should count as activity, but if the job ever stops, re-enable it on the **Actions** tab.
+- **GitHub pauses scheduled workflows** in public repositories after 60 days without repository activity. The job saves a copy of the data to the repository every 6 hours, which counts as activity, but if the job ever stops, re-enable it on the **Actions** tab.
 - **The first version of the site shows a seed snapshot** from Nov 2–3, 2026, labeled "Seed snapshot." The first successful run replaces it with live data.
 - **Not affiliated with Float.** Pairscope is an independent tool and is not affiliated with or endorsed by Float. The site footer says so too.
 - **Not financial advice.** Most launched coins lose value, and a strong stock can reverse quickly.
