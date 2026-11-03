@@ -1,0 +1,291 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Pairscope</title>
+<meta name="description" content="Find the open lane before you launch on Float, or the next coin before it graduates. Every pairing asset and coin, scanned hourly.">
+<meta property="og:title" content="Pairscope">
+<meta property="og:description" content="Every Float pairing asset ranked by momentum, news and crowding, refreshed hourly.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,400..800&family=IBM+Plex+Mono:wght@400;500;600&display=swap">
+<style>
+/* Layout: scanner console. Masthead with snapshot stamp, three "open lane" cards, filter bar, ranked table with a graduation meter per row. */
+:root{
+  --bg:#EDF1F5; --surface:#FFFFFF; --sunk:#E3E9F0; --fg:#0F1726; --muted:#586477; --line:#D3DBE5;
+  --accent:#D9481F; --accent-soft:#FBE4DB; --up:#167A4A; --down:#B9342A; --warm:#A86A00; --warm-soft:#F7ECD6;
+  --display:"Archivo","Helvetica Neue",Arial,sans-serif; --body:"Archivo","Helvetica Neue",Arial,sans-serif;
+  --mono:"IBM Plex Mono",ui-monospace,"SFMono-Regular",Menlo,monospace;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#0C121C; --surface:#131B28; --sunk:#0F1622; --fg:#E6EBF2; --muted:#8B97A9; --line:#243143;
+  --accent:#FF7547; --accent-soft:#3A1F17; --up:#43D18C; --down:#FF6B5E; --warm:#E8B04A; --warm-soft:#33280F; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#0C121C; --surface:#131B28; --sunk:#0F1622; --fg:#E6EBF2; --muted:#8B97A9; --line:#243143;
+  --accent:#FF7547; --accent-soft:#3A1F17; --up:#43D18C; --down:#FF6B5E; --warm:#E8B04A; --warm-soft:#33280F; color-scheme:dark}
+
+*{box-sizing:border-box}
+[hidden]{display:none!important}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--bg);color:var(--fg);font-family:var(--body);font-size:15px;line-height:1.5;
+  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:28px 56px}
+.wrap{max-width:1180px;margin:0 auto;display:flex;flex-direction:column;gap:28px}
+.num{font-family:var(--mono);font-variant-numeric:tabular-nums}
+
+/* masthead */
+.mast{display:flex;flex-wrap:wrap;align-items:flex-end;justify-content:space-between;gap:16px 32px;padding-bottom:20px;border-bottom:2px solid var(--fg)}
+.brand{display:flex;flex-direction:column;gap:6px;min-width:0}
+.word{font-family:var(--display);font-stretch:125%;font-weight:800;font-size:clamp(34px,6vw,56px);letter-spacing:-.01em;line-height:.95;display:flex;align-items:center;gap:14px}
+.scope{width:.78em;height:.78em;flex:none}
+.tag{font-size:17px;color:var(--muted);max-width:52ch;text-wrap:balance}
+.stamp{font-family:var(--mono);font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);display:flex;flex-direction:column;gap:4px;text-align:right}
+.stamp b{color:var(--accent);font-weight:600}
+@media (max-width:640px){.stamp{text-align:left}}
+
+.stats{display:flex;flex-wrap:wrap;gap:8px 28px;font-size:14px;color:var(--muted)}
+.stats span b{font-family:var(--mono);font-weight:600;color:var(--fg);font-size:16px;margin-right:6px}
+
+/* picks */
+.sec-h{font-family:var(--display);font-stretch:110%;font-weight:700;font-size:13px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted)}
+.picks{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}
+@media (max-width:860px){.picks{grid-template-columns:1fr}}
+.pick{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:18px;display:flex;flex-direction:column;gap:12px;min-width:0}
+.pick-top{display:flex;justify-content:space-between;align-items:flex-start;gap:12px}
+.pick .tk{font-family:var(--display);font-stretch:115%;font-weight:800;font-size:28px;line-height:1}
+.pick .nm{color:var(--muted);font-size:14px}
+.pick .meta{display:flex;flex-wrap:wrap;gap:6px 18px;font-size:13px;color:var(--muted)}
+.pick .meta b{font-family:var(--mono);color:var(--fg);font-weight:600}
+.pick .why{font-size:14px;border-top:1px dashed var(--line);padding-top:10px}
+
+/* controls */
+.controls{display:flex;flex-wrap:wrap;gap:12px 16px;align-items:center;background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:12px}
+.search{flex:1 1 220px;min-width:0;display:flex}
+.search input{width:100%;font:inherit;font-size:15px;padding:9px 12px;border:1px solid var(--line);border-radius:8px;background:var(--sunk);color:var(--fg)}
+.seg{display:flex;flex-wrap:wrap;gap:4px}
+.seg button,.tog,.sort select{font:inherit;font-size:13px;font-weight:600;border:1px solid var(--line);background:var(--sunk);color:var(--fg);border-radius:999px;padding:6px 12px;cursor:pointer}
+.seg button[aria-pressed="true"]{background:var(--fg);color:var(--bg);border-color:var(--fg)}
+.tog{display:inline-flex;align-items:center;gap:6px}
+.tog[aria-pressed="true"]{background:var(--accent-soft);border-color:var(--accent);color:var(--accent)}
+.tog::before{content:"";width:8px;height:8px;border-radius:50%;border:1.5px solid currentColor}
+.tog[aria-pressed="true"]::before{background:currentColor}
+.sort{display:flex;align-items:center;gap:6px;font-size:13px;color:var(--muted)}
+.sort select{border-radius:8px}
+button:focus-visible,input:focus-visible,select:focus-visible,tr:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+
+/* table */
+.tablebox{background:var(--surface);border:1px solid var(--line);border-radius:10px;overflow-x:auto}
+table{width:100%;border-collapse:collapse;min-width:820px}
+th{font-family:var(--mono);font-size:11px;font-weight:500;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);text-align:left;padding:12px 14px;border-bottom:1px solid var(--line);white-space:nowrap}
+th.r,td.r{text-align:right}
+td{padding:12px 14px;border-bottom:1px solid var(--line);vertical-align:middle}
+tbody tr.row{cursor:pointer}
+tbody tr.row:hover{background:var(--sunk)}
+.rank{font-family:var(--mono);color:var(--muted);font-size:12px;width:36px}
+.asset{display:flex;flex-direction:column;gap:3px;min-width:0}
+.asset .t{font-family:var(--display);font-stretch:112%;font-weight:750;font-size:16px;display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.asset .n{color:var(--muted);font-size:13px;max-width:28ch;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.chip{font-family:var(--mono);font-size:10.5px;font-weight:500;letter-spacing:.04em;padding:2px 6px;border-radius:4px;border:1px solid var(--line);color:var(--muted);white-space:nowrap}
+.chip.fee{border-color:var(--warm);color:var(--warm);background:var(--warm-soft)}
+.open{font-family:var(--mono);font-size:11px;font-weight:600;color:var(--up)}
+.coins b{font-family:var(--mono);font-size:15px}
+.coins small{display:block;color:var(--muted);font-size:12px}
+.topcoin{min-width:190px}
+.topcoin .l{display:flex;justify-content:space-between;gap:10px;font-size:13px}
+.topcoin .l span:first-child{font-weight:600;max-width:12ch;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.meter{position:relative;height:6px;border-radius:3px;background:var(--sunk);margin-top:6px;border:1px solid var(--line)}
+.meter i{position:absolute;left:0;top:0;bottom:0;border-radius:3px;background:var(--muted)}
+.meter i.grad{background:var(--up)}
+.meter em{position:absolute;top:-3px;bottom:-3px;width:2px;background:var(--fg);opacity:.55}
+.dash{color:var(--muted)}
+.ytd{font-family:var(--mono);font-weight:600}
+.ytd.up{color:var(--up)} .ytd.down{color:var(--down)}
+.news{font-size:13px;max-width:30ch}
+.news.on{color:var(--fg)}
+.score{display:inline-flex;align-items:center;gap:8px;justify-content:flex-end}
+.score b{font-family:var(--mono);font-size:15px;min-width:2ch;text-align:right}
+.bar{width:54px;height:6px;border-radius:3px;background:var(--sunk);border:1px solid var(--line);overflow:hidden}
+.bar i{display:block;height:100%;background:var(--muted)}
+.hot .bar i{background:var(--accent)} .hot b{color:var(--accent)}
+.warmr .bar i{background:var(--warm)}
+tr.detail td{background:var(--sunk);padding:14px 18px 16px 50px}
+.bd{display:flex;flex-wrap:wrap;gap:8px 22px;font-size:13px;color:var(--muted)}
+.bd b{font-family:var(--mono);color:var(--fg)}
+.bd .neg b{color:var(--down)}
+.empty{padding:28px;text-align:center;color:var(--muted)}
+.count{font-size:13px;color:var(--muted)}
+
+/* footer */
+.how{display:grid;grid-template-columns:minmax(0,1.2fr) minmax(0,1fr);gap:24px}
+@media (max-width:760px){.how{grid-template-columns:1fr}}
+.how h3{font-family:var(--display);font-stretch:110%;font-size:16px;margin:0 0 8px}
+.how p,.how li{font-size:14px;color:var(--muted);max-width:62ch}
+.how ul{margin:0;padding-left:18px;display:flex;flex-direction:column;gap:4px}
+.how li b{color:var(--fg);font-family:var(--mono);font-weight:600}
+.legend{display:flex;align-items:center;gap:14px;flex-wrap:wrap;font-size:12px;color:var(--muted)}
+.legend .meter{width:140px;margin:0}
+@media (prefers-reduced-motion:no-preference){tbody tr.row{transition:background .12s}}
+.news a{color:inherit;text-decoration:underline;text-decoration-color:var(--line);text-underline-offset:3px}
+.news a:hover{text-decoration-color:var(--accent)}
+.news small{display:block;color:var(--muted);font-size:12px;margin-top:2px}
+.ytd small{display:block;font-weight:400;font-size:11px;color:var(--muted)}
+.stale{color:var(--warm)}
+.loading{padding:40px;text-align:center;color:var(--muted)}
+.tabs{display:flex;gap:6px;border-bottom:1px solid var(--line);flex-wrap:wrap}
+.tabs a{font-family:var(--display);font-stretch:110%;font-weight:700;font-size:15px;color:var(--muted);text-decoration:none;padding:10px 14px;border-bottom:3px solid transparent;margin-bottom:-1px;display:flex;flex-direction:column;gap:1px}
+.tabs a small{font-family:var(--mono);font-weight:500;font-size:11px;letter-spacing:.06em;text-transform:uppercase}
+.tabs a[aria-selected="true"]{color:var(--fg);border-bottom-color:var(--accent)}
+.tabs a:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.act{font-family:var(--mono);font-size:11px;font-weight:600;letter-spacing:.04em;padding:2px 8px;border-radius:999px;border:1px solid var(--line);color:var(--muted);white-space:nowrap}
+.act.Hot{color:var(--accent);border-color:var(--accent);background:var(--accent-soft)}
+.act.Active{color:var(--up);border-color:var(--up)}
+.coin a{color:inherit;text-decoration:none;font-family:var(--display);font-stretch:112%;font-weight:750;font-size:16px}
+.coin a:hover{text-decoration:underline;text-decoration-color:var(--accent)}
+.status{font-size:12px;color:var(--muted)}
+.status b{color:var(--up);font-family:var(--mono)}
+td .sub{display:block;color:var(--muted);font-size:12px}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header class="mast">
+    <div class="brand">
+      <div class="word">
+        <svg class="scope" viewBox="0 0 40 40" aria-hidden="true">
+          <circle cx="20" cy="20" r="17" fill="none" stroke="currentColor" stroke-width="3"/>
+          <circle cx="20" cy="20" r="9" fill="none" stroke="currentColor" stroke-width="2" opacity=".45"/>
+          <path d="M20 20 L33 9" stroke="var(--accent)" stroke-width="3" stroke-linecap="round"/>
+          <circle cx="28" cy="25" r="3" fill="var(--accent)"/>
+        </svg>
+        PAIRSCOPE
+      </div>
+      <div class="tag">Find the open lane before you launch, or the next coin before it graduates. Every Float pairing asset and coin, scanned hourly.</div>
+    </div>
+    <div class="stamp">
+      <span><b id="fresh">Loading</b></span>
+      <span id="updated">&nbsp;</span>
+      <span id="srcs">&nbsp;</span>
+    </div>
+  </header>
+
+  <div class="stats" id="stats"></div>
+
+  <nav class="tabs" role="tablist" aria-label="Views">
+    <a href="#pairings" role="tab" id="tab-pairs" aria-selected="true">Pairings<small>for launchers</small></a>
+    <a href="#coins" role="tab" id="tab-coins" aria-selected="false">Top coins<small>for traders</small></a>
+  </nav>
+
+  <div id="view-pairs" style="display:flex;flex-direction:column;gap:28px">
+  <section aria-labelledby="picks-h" style="display:flex;flex-direction:column;gap:12px">
+    <div class="sec-h" id="picks-h">Top open lanes · no coins yet</div>
+    <div class="picks" id="picks"></div>
+  </section>
+
+  <section aria-labelledby="all-h" style="display:flex;flex-direction:column;gap:12px">
+    <div style="display:flex;justify-content:space-between;align-items:baseline;flex-wrap:wrap;gap:8px">
+      <div class="sec-h" id="all-h">All pairing assets</div>
+      <div class="count" id="count"></div>
+    </div>
+    <div class="controls">
+      <label class="search" for="q"><input id="q" type="search" placeholder="Search ticker or company" autocomplete="off"></label>
+      <div class="seg" role="group" aria-label="Asset type" id="kind"></div>
+      <button class="tog" id="t-open" aria-pressed="false">No coins yet</button>
+      <button class="tog" id="t-fee" aria-pressed="false">No transfer fee</button>
+      <button class="tog" id="t-news" aria-pressed="false">In the news</button>
+      <label class="sort" for="sort">Sort
+        <select id="sort">
+          <option value="score">Score</option>
+          <option value="ytd">2026 return</option>
+          <option value="coins">Fewest coins</option>
+          <option value="top">Top coin size</option>
+        </select>
+      </label>
+    </div>
+    <div class="tablebox">
+      <table>
+        <thead><tr>
+          <th>#</th><th>Asset</th><th class="r">Coins</th><th>Best coin on it</th><th class="r">2026 return</th><th>In the news</th><th class="r">Score</th>
+        </tr></thead>
+        <tbody id="tb"><tr><td colspan="7" class="loading">Loading the latest scan</td></tr></tbody>
+      </table>
+    </div>
+    <div class="legend">
+      <span>Best-coin meter:</span>
+      <span class="meter" aria-hidden="true"><i style="width:13.3%"></i><em style="left:13.3%"></em><em style="left:100%;margin-left:-2px"></em></span>
+      <span>tick 1 = $20K launch · end = ~$150K graduation</span>
+    </div>
+  </section>
+
+  </div>
+
+  <div id="view-coins" style="display:flex;flex-direction:column;gap:28px" hidden>
+  <section aria-labelledby="cpicks-h" style="display:flex;flex-direction:column;gap:12px">
+    <div class="sec-h" id="cpicks-h">Closest to graduating · still on the curve</div>
+    <div class="picks" id="cpicks"></div>
+  </section>
+
+  <section aria-labelledby="coins-h" style="display:flex;flex-direction:column;gap:12px">
+    <div style="display:flex;justify-content:space-between;align-items:baseline;flex-wrap:wrap;gap:8px">
+      <div class="sec-h" id="coins-h">Every Float coin</div>
+      <div class="count" id="ccount"></div>
+    </div>
+    <div class="controls">
+      <label class="search" for="cq"><input id="cq" type="search" placeholder="Search coin or paired asset" autocomplete="off"></label>
+      <div class="seg" role="group" aria-label="Coin status" id="cstatus"></div>
+      <button class="tog" id="ct-active" aria-pressed="false">Traded today</button>
+      <button class="tog" id="ct-news" aria-pressed="false">Stock in the news</button>
+      <label class="sort" for="csort">Sort
+        <select id="csort">
+          <option value="volume">24h volume</option>
+          <option value="fdv">Market cap</option>
+          <option value="grad">Closest to graduating</option>
+          <option value="holders">Holders</option>
+          <option value="paid">Paid to holders (7d)</option>
+          <option value="stock">Paired stock's 2026 return</option>
+        </select>
+      </label>
+    </div>
+    <div class="tablebox">
+      <table>
+        <thead><tr>
+          <th>#</th><th>Coin</th><th>Market cap</th><th class="r">24h volume</th><th class="r">Holders</th><th class="r">Paid to holders 7d</th><th>Paired asset</th><th>Activity</th>
+        </tr></thead>
+        <tbody id="ctb"><tr><td colspan="8" class="loading">Loading coins</td></tr></tbody>
+      </table>
+    </div>
+    <div class="legend">
+      <span>Market cap meter:</span>
+      <span class="meter" aria-hidden="true"><i style="width:13.3%"></i><em style="left:13.3%"></em><em style="left:100%;margin-left:-2px"></em></span>
+      <span>tick 1 = $20K launch · end = ~$150K graduation. Coin names open the coin on Float.</span>
+    </div>
+  </section>
+  </div>
+
+  <section class="how">
+    <div>
+      <h3>How the score works</h3>
+      <ul>
+        <li><b>Momentum, up to 40:</b> 2026 return of 100%+ scores 40, 50%+ scores 30, 20%+ scores 20, any gain 10. Crypto, baskets and stocks without return data get 10.</li>
+        <li><b>Open lane, up to 30:</b> no coins scores 30, 1–2 coins 20, 3–9 coins 10.</li>
+        <li><b>In the news, up to 20:</b> 10 or more headlines about the asset in the last 24 hours scores 20, 3 or more scores 10.</li>
+        <li><b>Proven demand, 10:</b> a coin on this asset has reached $50K.</li>
+        <li><b>Transfer fee:</b> 1% costs 10 points, 0.2% costs 3, because it eats holder rewards.</li>
+      </ul>
+    </div>
+    <div>
+      <h3>Reading the coins tab</h3>
+      <ul>
+        <li><b>Activity:</b> Hot means 24h volume is at least the coin's market cap, Active means at least a quarter of it, Slow means some trading, Quiet means none today.</li>
+        <li><b>Paid to holders 7d:</b> the paired-stock rewards Float sent to the coin's holders over the last week, in US dollars.</li>
+        <li><b>Graduating:</b> a coin moves to a locked Raydium pool at about $150K. Coins near the end of the meter are close.</li>
+      </ul>
+      <h3 style="margin-top:18px">About the data</h3>
+      <p>Refreshed every hour. Coin counts and coin stats come from Float's public tokens page and its stats feed, stock returns from Yahoo Finance with Stooq as a backup, and headlines from Google News. Coin counts are grouped by ticker, so a stock offered by two issuers shows one combined count. If a source fails, the last good value is kept and marked as stale.</p>
+      <p>Pairscope is an independent tool and is not affiliated with or endorsed by Float. Not financial advice. Most launched coins lose value, and a strong stock can reverse quickly.</p>
+    </div>
+  </section>
+</div>
+
+<script src="app.js" defer></script>
+</body>
+</html>

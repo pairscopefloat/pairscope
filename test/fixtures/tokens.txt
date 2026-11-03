@@ -1,0 +1,107 @@
+Launch coins on top of real stocks.
+
+Pair your coin with SOL, USDC or any of 298 tokenized stocks.
+Deep liquidity from the first trade, and holders earn a share of every trade in the stock.
+
+Launch a coin
+FLOAT
+Filters
+FDV
+Recent
+24h Volume
+Filter
+All
+Bonding
+Graduated
+$CAPY
+$664.25K
+Anchored to
+SOL
+Graduated
+$CHAD
+$196.64K
+Anchored to
+HIMS
+Graduated
+$HAMSTER
+$143.71K
+Anchored to
+SOL
+Graduated
+$CPU
+$107.89K
+Anchored to
+INTC
+Graduated
+$XDG
+$87.79K
+Anchored to
+Monero
+$HEDGE
+$83.87K
+Anchored to
+USDC
+Graduated
+$FLOATER
+$67.73K
+Anchored to
+SPY
+Graduated
+$BEACHBALL
+$56.19K
+Anchored to
+SOL
+$iNu
+$38.72K
+Anchored to
+AAPL
+Graduated
+$DACITY
+$38.49K
+Anchored to
+TTWO
+$UNI
+$37.68K
+Anchored to
+SPY
+$RAYCAT
+$36.67K
+Anchored to
+RAY
+$PI
+$35.68K
+Anchored to
+FRONTIER
+$FRIES
+$35.22K
+Anchored to
+MCD
+$ELON
+$35.05K
+Anchored to
+MUSK4
+$FATCOIN
+$32.65K
+Anchored to
+LLY
+$GTA6
+$32.09K
+Anchored to
+TTWO
+$DACITYCOIN
+$31.31K
+Anchored to
+TTWO
+$ANT
+$31.30K
+Anchored to
+ANTHROPIC
+$FCAT
+$30.78K
+Anchored to
+QQQ
+$XDG2
+$1.20M
+Anchored to
+XMR
+Show more tokens

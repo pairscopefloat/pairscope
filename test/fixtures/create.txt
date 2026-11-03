@@ -1,0 +1,794 @@
+FLOAT
+Docs
+Launch on stock tokens
+1
+Pick your pairing asset
+Your token trades against it, and its fees are paid in it.
+All
+Crypto
+Leverage
+xStock
+Tessera
+Sunrise
+PreStock
+Basket
+Custom
+SOL
+CRYPTO
+Solana
+USDC
+CRYPTO
+USD Coin
+ZEC
+CRYPTO
+Zcash
+XMR
+CRYPTO
+Monero (wrapped)
+HYPE
+CRYPTO
+Hyperliquid
+PUMP
+CRYPTO
+Pump
+BONK
+CRYPTO
+Bonk
+WIF
+CRYPTO
+dogwifhat
+PENGU
+CRYPTO
+Pudgy Penguins
+TRUMP
+CRYPTO
+Official Trump
+JUP
+CRYPTO
+Jupiter
+RAY
+CRYPTO
+Raydium
+FARTCOIN
+CRYPTO
+Fartcoin
+WBTC
+CRYPTO
+Wrapped Bitcoin
+USDT
+CRYPTO
+Tether USD
+xSOL
+LEVERAGE
+Hylo Leveraged SOL
+XBTC
+LEVERAGE
+Hylo Leveraged BTC
+XHYPE
+LEVERAGE
+Hylo Leveraged HYPE
+PYTH
+CRYPTO
+Pyth Network
+RENDER
+CRYPTO
+Render
+JTO
+CRYPTO
+Jito
+BIO
+CRYPTO
+Bio Protocol
+NEAR
+CRYPTO
+NEAR (bridged)
+GRASS
+CRYPTO
+Grass
+2Z
+CRYPTO
+DoubleZero
+MPLX
+CRYPTO
+Metaplex
+CARDS
+CRYPTO
+Collector Crypt
+NEET
+CRYPTO
+Not in Employment, Education or Training
+STONK
+CRYPTO
+STONK
+TRX
+CRYPTO
+TRON
+XRP
+CRYPTO
+Wrapped XRP (Hex Trust)
+SUI
+CRYPTO
+Sui
+USD1
+CRYPTO
+World Liberty Financial USD
+VIRTUAL
+CRYPTO
+Virtuals Protocol
+STRK
+CRYPTO
+Starknet
+BP
+CRYPTO
+Backpack
+cbBTC
+CRYPTO
+Coinbase Wrapped BTC
+PSOL
+CRYPTO
+Phantom Staked SOL
+USELESS
+CRYPTO
+Useless Coin
+ORCA
+CRYPTO
+Orca
+EURC
+CRYPTO
+Euro Coin
+SPX
+CRYPTO
+SPX6900
+PNUT
+CRYPTO
+Peanut the Squirrel
+MET
+CRYPTO
+Meteora
+SKR
+CRYPTO
+Seeker
+W
+CRYPTO
+Wormhole
+ANSEM
+CRYPTO
+The Black Bull
+ARC
+CRYPTO
+AI Rig Complex
+CATE
+CRYPTO
+Catecoin
+MOODENG
+CRYPTO
+Moo Deng
+TROLL
+CRYPTO
+TROLL
+ZEREBRO
+CRYPTO
+Zerebro
+BIRB
+CRYPTO
+Moonbirds
+GOAT
+CRYPTO
+Goatseus Maximus
+PIPPIN
+CRYPTO
+Pippin
+BERT
+CRYPTO
+Bertram The Pomeranian
+CHILLGUY
+CRYPTO
+Just a chill guy
+SOLO
+CRYPTO
+Solomon
+UFD
+CRYPTO
+Unicorn Fart Dust
+BUTTCOIN
+CRYPTO
+Buttcoin
+FWOG
+CRYPTO
+FWOG
+ETH
+CRYPTO
+Ether (Wormhole)
+POPCAT
+CRYPTO
+Popcat
+BOME
+CRYPTO
+Book of Meme
+JELLYJELLY
+CRYPTO
+Jelly-My-Jelly
+FARTBOY
+CRYPTO
+Fartboy
+GIGA
+CRYPTO
+Gigachad
+HAROLD
+CRYPTO
+Harold
+ACT
+CRYPTO
+Act I: The AI Prophecy
+VINE
+CRYPTO
+Vine Coin
+AURA
+CRYPTO
+aura
+GME
+CRYPTO
+GameStop (meme)
+WW3
+CRYPTO
+World War 3
+ALON
+CRYPTO
+alon
+TSUKI
+CRYPTO
+Tsuki
+CRIME
+CRYPTO
+Crime onchain
+KORI
+CRYPTO
+Kori The Pom
+RETIRE
+CRYPTO
+The Last Play
+DEGOD
+CRYPTO
+degod
+EPIK
+CRYPTO
+Teh Epik Duck
+MOBY
+CRYPTO
+Moby AI
+KITTY
+CRYPTO
+Hello Kitty (meme)
+USA
+CRYPTO
+American Coin
+HEEBOO
+CRYPTO
+HEEBOO
+CODEC
+CRYPTO
+Codec Flow
+PBTC
+CRYPTO
+Purple Bitcoin
+STNK
+CRYPTO
+Stonks
+SOLCEX
+CRYPTO
+SolCex
+TOKABU
+CRYPTO
+The Spirit of Gambling
+XAVIER
+CRYPTO
+Xavier: Renegade Angel
+CYBERLEEK
+CRYPTO
+CyberLeek
+SIGMA
+CRYPTO
+Sigma
+BNB
+CRYPTO
+BNB (Wormhole)
+GORK
+CRYPTO
+gork
+MICHI
+CRYPTO
+michi
+NEIRO
+CRYPTO
+Neiro
+SHOGGOTH
+CRYPTO
+Shoggoth
+BODEN
+CRYPTO
+jeo boden
+MLG
+CRYPTO
+360noscope420blazeit
+CHUD
+CRYPTO
+Chudjak
+MOTHER
+CRYPTO
+MOTHER IGGY
+BILLY
+CRYPTO
+BILLY
+SCF
+CRYPTO
+Smoking Chicken Fish
+SPY
+XSTOCK
+SP500
+NVDA
+XSTOCK
+NVIDIA
+GOOGL
+XSTOCK
+Alphabet
+QQQ
+XSTOCK
+Nasdaq
+TSLA
+XSTOCK
+Tesla
+CRCL
+XSTOCK
+Circle
+COIN
+XSTOCK
+Coinbase
+MSTR
+XSTOCK
+MicroStrategy
+AMZN
+XSTOCK
+Amazon
+HOOD
+XSTOCK
+Robinhood
+SPCX
+XSTOCK
+SpaceX
+AAPL
+XSTOCK
+Apple
+GLD
+XSTOCK
+Gold
+META
+XSTOCK
+Meta
+PLTR
+XSTOCK
+Palantir
+MSFT
+XSTOCK
+Microsoft
+GME
+XSTOCK
+Gamestop
+tOpenAI
+TESSERA
+0.2% transfer fee
+T-OpenAI
+STRC
+XSTOCK
+Strategy PP Variable
+MCD
+XSTOCK
+McDonald's
+BRK.B
+XSTOCK
+Berkshire Hathaway
+MU
+SUNRISE
+Micron Technology
+BOT
+SUNRISE
+RoboStrategy
+SKHY
+SUNRISE
+SK Hynix
+SNDK
+SUNRISE
+Sandisk
+KO
+XSTOCK
+Coca-Cola
+INTC
+XSTOCK
+Intel
+DRAM
+SUNRISE
+Roundhill Memory ETF
+ANTHROPIC
+PRESTOCK
+1% transfer fee
+Anthropic
+ANDURIL
+PRESTOCK
+1% transfer fee
+Anduril
+POLYMARKET
+PRESTOCK
+1% transfer fee
+Polymarket
+KALSHI
+PRESTOCK
+1% transfer fee
+Kalshi
+NEURALINK
+PRESTOCK
+1% transfer fee
+Neuralink
+OPENAI
+PRESTOCK
+1% transfer fee
+OpenAI
+TTWO
+SUNRISE
+Take-Two Interactive Software
+NBIS
+SUNRISE
+Nebius Group N.V.
+MRNA
+SUNRISE
+Moderna
+LLY
+SUNRISE
+Eli Lilly and Company
+MRVL
+SUNRISE
+Marvell Technology
+PSG
+SUNRISE
+Paris Saint-Germain
+PONS
+SUNRISE
+Pons
+VIDA
+XSTOCK
+Vida Global
+GPRO
+SUNRISE
+GoPro
+AMC
+SUNRISE
+AMC Entertainment
+TAO
+SUNRISE
+Bittensor
+FIGUREAI
+PRESTOCK
+1% transfer fee
+Figure AI
+ARB
+SUNRISE
+Arbitrum
+DOGE
+SUNRISE
+Dogecoin
+LIT
+SUNRISE
+Lighter
+NKE
+SUNRISE
+Nike
+PEAQ
+SUNRISE
+peaq
+SPHR
+SUNRISE
+Sphere Entertainment Co.
+DFDV
+XSTOCK
+DFDV
+HTZ
+SUNRISE
+Hertz Global Holdings, Inc Common Stock
+RDDT
+SUNRISE
+Reddit
+COST
+SUNRISE
+Costco Wholesale
+DELL
+SUNRISE
+Dell Technologies
+DJT
+SUNRISE
+Trump Media & Technology Group Corp. Common Stock
+IBM
+SUNRISE
+International Business Machines
+LMT
+SUNRISE
+Lockheed Martin
+QUBT
+SUNRISE
+Quantum Computing
+RBLX
+SUNRISE
+Roblox
+HIMS
+SUNRISE
+Hims & Hers Health
+LULU
+SUNRISE
+lululemon athletica inc.
+PFE
+SUNRISE
+Pfizer
+RIVN
+SUNRISE
+Rivian Automotive
+SHOP
+SUNRISE
+Shopify
+SNAP
+SUNRISE
+Snap
+UPS
+SUNRISE
+United Parcel Service
+BA
+SUNRISE
+The Boeing Company
+BULL
+SUNRISE
+Webull Corporation
+JNJ
+SUNRISE
+Johnson & Johnson
+BABA
+SUNRISE
+Alibaba Group Holding
+GRND
+SUNRISE
+Grindr
+MGM
+SUNRISE
+MGM Resorts International
+DNUT
+SUNRISE
+Krispy Kreme, Inc. Common Stock
+WEN
+SUNRISE
+The Wendy's Company
+DKNG
+SUNRISE
+DraftKings
+FLWS
+SUNRISE
+1-800-FLOWERS.COM
+LINK
+SUNRISE
+Chainlink Token
+SCHH
+SUNRISE
+Schwab U.S. REIT ETF
+PTN
+SUNRISE
+Palatin Technologies, Inc.
+FLY
+SUNRISE
+Firefly Aerospace
+BROS
+SUNRISE
+Dutch Bros
+AMD
+SUNRISE
+Advanced Micro Devices
+CHIP
+SUNRISE
+USD.AI
+FWDI
+SUNRISE
+Forward Industries, Inc.
+LUV
+SUNRISE
+Southwest Airlines Co.
+INJ
+SUNRISE
+Injective
+WULF
+SUNRISE
+TeraWulf
+RUM
+SUNRISE
+RUM Group Inc.
+USO
+SUNRISE
+United States Oil Fund, LP
+CYPH
+SUNRISE
+Cypherpunk Technologies
+PEPE
+SUNRISE
+Pepe
+BB
+SUNRISE
+BlackBerry
+AVAX
+SUNRISE
+AVAX
+URA
+SUNRISE
+Global X Uranium ETF
+COPX
+SUNRISE
+Global X Copper Miners ETF
+IONQ
+SUNRISE
+IonQ
+APE
+SUNRISE
+ApeCoin
+ARM
+SUNRISE
+Arm Holdings
+CRWV
+SUNRISE
+CoreWeave
+ENA
+SUNRISE
+Ethena
+ZAMA
+SUNRISE
+Zama
+IREN
+SUNRISE
+IREN
+SQQQ
+SUNRISE
+ProShares UltraPro Short QQQ
+cbLTC
+SUNRISE
+Coinbase Wrapped LTC
+EWY
+SUNRISE
+iShares MSCI South Korea ETF
+Cake
+SUNRISE
+PancakeSwap Token
+NOK
+SUNRISE
+Nokia Oyj
+cbADA
+SUNRISE
+Coinbase Wrapped ADA
+RKLB
+SUNRISE
+Rocket Lab
+NFLX
+SUNRISE
+Netflix
+BE
+SUNRISE
+Bloom Energy
+QNT
+SUNRISE
+Quant
+ONDO
+SUNRISE
+Ondo
+PUSA
+SUNRISE
+Powerus Corporation
+BLK
+SUNRISE
+BlackRock
+SHIB
+SUNRISE
+SHIBA INU
+EWZ
+SUNRISE
+iShares MSCI Brazil ETF
+CBRS
+SUNRISE
+Cerebras Systems
+VVV
+SUNRISE
+Venice Token
+RACE
+SUNRISE
+Ferrari
+WLD
+SUNRISE
+Worldcoin
+OURA
+PRESTOCK
+1% transfer fee
+Oura
+ASTER
+SUNRISE
+Aster
+XPL
+SUNRISE
+Plasma
+RIOT
+SUNRISE
+Riot Platforms
+CMG
+SUNRISE
+Chipotle Mexican Grill
+TSM
+SUNRISE
+Taiwan Semiconductor Manufacturing Company
+AVGO
+SUNRISE
+Broadcom
+FRONTIER
+BASKET
+AI Frontier
+UVXY
+SUNRISE
+ProShares Ultra VIX Short-Term Futures ETF
+MUSK4
+BASKET
+MUSK Index
+CHWY
+SUNRISE
+Chewy
+WLFI
+SUNRISE
+World Liberty Financial
+ABNB
+SUNRISE
+Airbnb
+SAMA4
+BASKET
+SAMA Index
+TSLA
+SUNRISE
+Tesla
+TRUMP3
+BASKET
+Trump Index
+META
+SUNRISE
+Meta Platforms
+SAYLOR3
+BASKET
+Saylor Index
+AMZN
+SUNRISE
+Amazon
+NVDA
+SUNRISE
+Nvidia
+AAPL
+SUNRISE
+Apple
+GOOGL
+SUNRISE
+Alphabet
+MSFT
+SUNRISE
+Microsoft
+CAKE
+SUNRISE
+Cheesecake Factory (The)
+ICE
+SUNRISE
+Intercontinental Exchange
+SPY
+SUNRISE
+State Street SPDR S&P 500 ETF Trust
+PENG
+SUNRISE
+Penguin Solutions
+AMBA
+SUNRISE
+Ambarella
+2
+Name your token
+This is how it shows up everywhere.
+Ticker
+Name
