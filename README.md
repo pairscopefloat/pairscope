@@ -15,7 +15,7 @@ It then gives each asset an opportunity score from 0 to 100 and publishes a stat
 ## How it fits together
 
 ```
-GitHub Actions: fast run every 10 min (Float only), full run every hour at :33 (Float + prices + news)
+GitHub Actions: fast run every 12 min (Float only), full run every hour at :33 (Float + prices + news)
   └─ scripts/refresh.mjs
        ├─ scripts/lib/float.mjs     loads Float's pages in headless Chromium and parses them
        ├─ scripts/lib/prices.mjs    Yahoo Finance chart data, Stooq fallback
@@ -57,7 +57,7 @@ News: 110/112 ok
 Wrote 246 rows in 61.3s. Top 5: SNDK 90, MU 90, ...
 ```
 
-After that, it runs by itself: Float data every 10 minutes, prices and news every hour.
+After that, it runs by itself: Float data every 12 minutes, prices and news every hour.
 
 ### 5. Turn on the website
 **Settings → Pages →** under **Build and deployment**, set **Source** to **GitHub Actions**. There is nothing else to pick: the refresh job publishes the site itself after every run. Run the job once more (step 4) so the first deploy happens.
@@ -109,11 +109,11 @@ To change the weights, edit `scripts/lib/score.mjs`. The website reads the score
 
 | Data | How often | Why this speed |
 |---|---|---|
-| Float coins, pairings, market caps, holders, volume, rewards | every 10 minutes | Float changes fastest. One run is about the same traffic as one person opening two pages and clicking "Show more", and Float serves those pages and its stats feed from Vercel's cache. |
+| Float coins, pairings, market caps, holders, volume, rewards | every 12 minutes | Float changes fastest. One run is about the same traffic as one person opening two pages and clicking "Show more", and Float serves those pages and its stats feed from Vercel's cache. |
 | Stock returns (Yahoo, Stooq) | every hour | About 100 requests per run against a free, unofficial source. Year-to-date returns barely move in an hour. |
 | Headlines (Google News) | every hour | About 110 searches per run. More often risks being rate-limited by Google. |
 
-Float publishes no robots.txt, no rate-limit headers and nothing in its terms about automated access (checked Nov 3, 2026), so there is no published "safe" number. Ten minutes is a deliberately conservative choice: going to 5 minutes would double the traffic for little gain, and runs that take a few minutes could start overlapping.
+Float publishes no robots.txt, no rate-limit headers and nothing in its terms about automated access (checked Nov 3, 2026), so there is no published "safe" number. Twelve minutes is a deliberately conservative choice: going to 5 minutes would more than double the traffic for little gain, and runs that take a few minutes could start overlapping.
 
 ---
 

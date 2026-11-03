@@ -42,7 +42,7 @@ function header(j){
   const ageMin = (Date.now()-Date.parse(coinsAt))/60000;
   const stale = !j.seed && ageMin > 45;
   const fresh = document.getElementById("fresh");
-  fresh.textContent = j.seed ? "Seed snapshot" : stale ? "Data is stale" : "Live · every 10 min";
+  fresh.textContent = j.seed ? "Seed snapshot" : stale ? "Data is stale" : "Live · every 12 min";
   fresh.className = (j.seed || stale) ? "stale" : "";
   document.getElementById("updated").textContent = "Coins updated " + ago(coinsAt);
   const s = j.sources || {};

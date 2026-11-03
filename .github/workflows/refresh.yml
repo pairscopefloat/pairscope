@@ -1,12 +1,12 @@
 name: Refresh Pairscope data
 
 # Two speeds:
-#  - Fast run every 10 minutes: Float only (new coins, pairings, market caps, holders, volume, rewards).
+#  - Fast run every 12 minutes: Float only (new coins, pairings, market caps, holders, volume, rewards).
 #  - Full run once an hour at :33: Float + stock returns (Yahoo) + headlines (Google News).
-# Odd minutes avoid the top of the hour, when GitHub's scheduler is busiest and runs get delayed.
+# These minutes avoid the top of the hour, when GitHub's scheduler is busiest and runs get delayed.
 on:
   schedule:
-    - cron: '3,13,23,43,53 * * * *'   # fast
+    - cron: '9,21,45,57 * * * *'      # fast (with :33 below, one run every 12 minutes)
     - cron: '33 * * * *'              # full
   workflow_dispatch:                  # "Run workflow" button on the Actions tab always does a full run
 
@@ -36,7 +36,7 @@ jobs:
       - name: Pick fast or full run
         id: mode
         run: |
-          if [ "${{ github.event.schedule }}" = "3,13,23,43,53 * * * *" ]; then
+          if [ "${{ github.event.schedule }}" = "9,21,45,57 * * * *" ]; then
             echo "fast=1" >> "$GITHUB_OUTPUT"; echo "Fast run (Float only)"
           else
             echo "fast=0" >> "$GITHUB_OUTPUT"; echo "Full run (Float, prices, news)"
