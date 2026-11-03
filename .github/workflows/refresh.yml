@@ -9,6 +9,9 @@ on:
     - cron: '9,21,45,57 * * * *'      # fast (with :33 below, one run every 12 minutes)
     - cron: '33 * * * *'              # full
   workflow_dispatch:                  # "Run workflow" button on the Actions tab always does a full run
+  push:                               # a code change also runs a full refresh and republishes the site
+    branches: [main]
+    paths-ignore: ['docs/data/**']    # the job's own data saves don't re-trigger it
 
 permissions:
   contents: write    # to save a copy of the data to the repository every 6 hours
@@ -42,7 +45,7 @@ jobs:
             echo "fast=0" >> "$GITHUB_OUTPUT"; echo "Full run (Float, prices, news)"
           fi
           # keep a copy in the repository every 6 hours (also keeps the schedule from being paused for inactivity)
-          if [ "${{ github.event_name }}" = "workflow_dispatch" ] || { [ "${{ github.event.schedule }}" = "33 * * * *" ] && [ $(( $(date -u +%H) % 6 )) -eq 0 ]; }; then
+          if [ "${{ github.event_name }}" = "workflow_dispatch" ] || [ "${{ github.event_name }}" = "push" ] || { [ "${{ github.event.schedule }}" = "33 * * * *" ] && [ $(( $(date -u +%H) % 6 )) -eq 0 ]; }; then
             echo "save=1" >> "$GITHUB_OUTPUT"
           else
             echo "save=0" >> "$GITHUB_OUTPUT"
