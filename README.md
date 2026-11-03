@@ -1,5 +1,7 @@
 # Pairscope
 
+**Live site:** https://pairscopefloat.github.io/pairscope/ (moving to https://pairscopefloat.xyz)
+
 Pairscope ranks every asset you can pair a coin with on [Float](https://www.floatlaunch.xyz), so you can find the open lane before you launch, and lists every Float coin for traders. It collects:
 
 - **Coin counts** from Float's public create and tokens pages: which assets already have coins, how many, and the best one on each.
